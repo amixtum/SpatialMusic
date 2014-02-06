@@ -10,10 +10,16 @@
 
 using namespace std;
 using namespace sf;
-/*
-Note class contains audio data and functions that access it
+/**
+ * This file requires SFML2
+ * The Drawable, Transformable, Sound, SoundBuffer, Vector etc. classes are included in the SFML2
  */
 
+/*
+ * The Note class holds audio data and contains methods to play back the audio data
+ * as well as get data relating to the musical quality and rythmic duration
+ * these values are not in standard notation
+ */
 class Note
 {
 public:
