@@ -23,83 +23,170 @@ using namespace sf;
 class Note
 {
 public:
+    //loads note of the specified duration and quality(tone)
     void load(int duration,int quality);
-        //loads note of the specified duration and quality(tone)
+    
+    //Plays the note
     void Play();
-        //Plays the note
+    
+    //returns the duration of the note
     int getDuration();
-        //returns the duration of the note
+    
+    //returns the quality of the note
     int getQuality();
-        //returns the quality of the note
 protected:
+    //Buffer to hold file
     SoundBuffer file;
+    
+    //Plays sound from buffer
     Sound note;
+    
+    //Duration of the note eg. 1 for 8th 2 for 4th 3 for dotted 8th 4 for dotted quarter
+    //Valid values are any integer from 1 to 4
     int duration;
+    
+    //Quality of the note 
+    //Acceptable values are integers from 1 - 12
+    //Based on major scale, not chromatic
     int quality;
 };
 
+/*
+ * The tile class represents a 100x100 square with a specified color
+ * Further documentation on the implementation of a class that extends from
+ * sf::Drawable can be found on sfml-dev.org in the tutorials and documentation
+ */
 class Tile : public Drawable, public Transformable
 {
 public:
-    bool load(float x,float y,int color);
     //sets the x and y position of the top left corner, as well as the color
-    float getX();
+    bool load(float x,float y,int color);
+    
     //returns the x member of coordinates variable
-    float getY();
+    float getX();
+    
     //returns the y member of coordinates variable
+    float getY();
 protected:
-    Texture t_tile;
     //Contains the tile sheet
+    Texture t_tile;
+    
+    //Vertices of the square
     VertexArray t_vertices;
-    //
+    
+    //Coordinates of the upper left corner
     Vector2f coordinates;
+    
+    //needed to inherit from sf::Drawable
     virtual void draw(RenderTarget& target, RenderStates states) const
     {
         states.transform *= getTransform();
         states.texture = &t_tile;
         target.draw(t_vertices, states);
     }
-    //overloaded method of sf::Drawable class
-    //allows object to be drawn like any object that inherits from sf::Drawable
-
 };
 
+/*
+ * Inherits from Note and Tile classes
+ * Connects a note to a tile of a specified color
+ */
 class NoteTile : public Note, public Tile
 {
 public:
-    void load(float,float,int,int);
+    //loads the tile and note
+    //The color of the tile is dependent on the quality parameter
+    void load(float x,float y,int duration,int quality);
+    
+    //plays the note
     void Play();
+    
+    //Returns the value of the SleepTime field
     float getSleepTime();
+    
+    //Returns the x coordinate of the top-left corner of the tile
     float getX();
+    
+    //Returns the y coordinate of the top-left corner of the tile
     float getY();
+    
+    //returns the top-left corner of the tile as an sf::Vector2f
     Vector2f getP();
+    
+    //Returns the quality of the note
+    //See note class for more detail
     int getQuality();
+    
+    //Returns the duration of the note
+    //See note class for more detail
     int getDuration();
+    
+    //Legacy code
+    //Doesn't do anything
     void Draw();
 protected:
+    //The amount of time in seconds of the note's duration
+    //Based on 150 beats per minute constant
     float SleepTime;
 };
 
+/*
+ * Entity class is a 100x100 square that moves around the tile grid
+ */
 class Entity
 {
 public:
+    //Sets all values
+    //Changing anything in this class will likely break the program
     Entity();
+    
+    //Moves the entity left
     void goLeft();
+    
+    //Moves the entity right
     void goRight();
+    
+    //Moves the entity up
     void goUp();
+    
+    //Moves the entity down
     void goDown();
+    
+    //Jumps the entity to a specified sf::Vector2f coordinate
     void jump(Vector2f);
+    
+    //Algorithm to automate entity movement
+    //Moslty random, but certain fixed positions will cause the entity to jump
+    //to a preset position
     void automate();
+    
+    //Returns the x coordinate
     float getX();
+    
+    //Returns the y coordinate
     float getY();
+    
+    //Returns the position as sf::Vector2f
     Vector2f getP();
+    
+    //Sprite for visual representation of entity
     Sprite s_entity;
 protected:
+    //Holds the image
     Texture t_entity;
+    
+    //Constant used for goUp()
     Vector2f up;
+    
+    //Constant used for goDown()
     Vector2f down;
+    
+    //Constant used for goLeft()
     Vector2f left;
+    
+    //Constant used for goRight()
     Vector2f right;
+    
+    //Constant fixed jump positions
     Vector2f jump1;
     Vector2f jump2;
     Vector2f jump3;
