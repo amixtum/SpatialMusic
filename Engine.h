@@ -9,6 +9,10 @@ using namespace sf;
 const int TILES = 24;
 const int SPACES = 6;
 
+/*
+ *Contains numberic data for the construction of the window
+ *and tiles
+ */
 struct EngineData
 {
     float w_width;
@@ -18,17 +22,33 @@ struct EngineData
     float coordinate_index[SPACES];
     string w_name;
 };
+
+/*
+ * Contains NoteTile and Tile arrays
+ * NOTE: t_array may not be needed anymore
+ */
 struct TileData
 {
     NoteTile tile_array[TILES];
     Tile t_array[TILES];
 };
+
+/*
+ * Creates the grid of NoteTiles and allows the entity to interact with it
+ * Uses SFML to display the images and play the sounds
+ */
 class Engine
 {
 public:
+    //Sets the basic e_data values
+    //calls setTileCoordinates
     Engine(string);
+    
+    //Runs the main operation of this program
     void Init();
 protected:
+
+    
     void setTileCoordinates();
     bool isOnTile(Vector2f,Vector2f);
     EngineData e_data;
